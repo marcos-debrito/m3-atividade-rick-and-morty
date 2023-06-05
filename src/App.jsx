@@ -1,34 +1,32 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { SectionCharacters } from "./components/Characters";
 
-function App() {
-  const [count, setCount] = useState(0);
+export const App = () => {
+  const [characterList, setCharacterList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+ /* characterList -> array com todos os personagens do rick and morty */
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        console.log("in");
+        const response = await axios.get(
+          "https://rickandmortyapi.com/api/character/"
+        );
+        setCharacterList(response.data.results)
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
-}
+    getData();
+  }, []);
 
-export default App;
+  return (<>
+    {isLoading ?
+    <div>Loading...</div> :
+    <SectionCharacters array = {characterList} /> }
+    </>);
+};

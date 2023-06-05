@@ -1,0 +1,10 @@
+ul {
+    width: 80vw;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 30% auto;
+    max-height: 350px;
+    overflow: auto;
+    border: 2px solid black;
+}
